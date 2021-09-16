@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+option go_package = "proto-generated/item_proto";
+
+message Item {
+    string id = 1;
+    string site_id = 2;
+    string title = 3;
+    int32 seller_id = 4;
+    bool catalog_listing = 5;
+    string permalink = 6;
+
+    message Attribute {
+        string id = 1;
+        string name = 2;
+        string value_id = 3;
+        string value_name = 4;
+        repeated Values values = 5;        
+
+        message Values {
+            string id = 1;
+            string name = 2;
+        }
+    }
+
+    repeated Attribute attributes = 7;
+}
+
+message ItemId {
+    string id = 1;
+}
+
+message SellerId {
+    int32 id = 1;
+}
+
+message ItemIds {
+    repeated ItemId id = 1;
+}
+
+service ItemService {
+    rpc Create(Item) returns (Item);
+
+    //Unary
+    rpc Get(ItemId) returns (Item);
+    //Server streaming
+    rpc GetItemsBySeller(SellerId) returns (stream Item);
+    //Client streaming
+    rpc CreateItems(stream Item) returns (ItemIds);
+    //Bidirectional streaming
+    rpc BidiItems(stream ItemId) returns (stream Item);
+}
