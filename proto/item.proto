@@ -35,7 +35,7 @@ message SellerId {
 }
 
 message ItemIds {
-    repeated ItemId id = 1;
+    repeated ItemId ids = 1;
 }
 
 service ItemService {
